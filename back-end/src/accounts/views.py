@@ -3,6 +3,9 @@ from rest_framework import generics, permissions
 from rest_framework.response import Response
 from knox.models import AuthToken
 from .serializers import UserSerializer, RegisterSerializer
+from django.contrib.auth.models import User
+from rest_framework.generics import ListAPIView
+
 #Login in and Logout system
 from django.contrib.auth import login
 
@@ -21,6 +24,12 @@ class RegisterAPI(generics.GenericAPIView):
         "user": UserSerializer(user, context=self.get_serializer_context()).data,
         "token": AuthToken.objects.create(user)[1]
         })
+
+    class AllUsersAPI(ListAPIView):
+        queryset = User.objects.all()
+        serializer_class = UserSerializer
+     
+
 
 
 
